@@ -9,7 +9,7 @@ class App < Sinatra::Base
     end
 
     get '/' do
-        @user = db.execute('SELECT  FROM Contact')
+        @user = db.execute('SELECT * FROM user')
         erb :index
     end
 

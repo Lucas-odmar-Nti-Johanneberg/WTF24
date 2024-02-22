@@ -1,1 +1,5 @@
-<h2>Hello from index.erb</h2>
+<ul>
+  <% @users.each do |user| %>
+    <li><%= user['name'] %></li>
+  <% end %>
+</ul>
