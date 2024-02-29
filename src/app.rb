@@ -9,9 +9,13 @@ class App < Sinatra::Base
     end
 
     get '/' do
-        @user = db.execute('SELECT * FROM user')
+        @users = db.execute("SELECT * FROM user")
         erb :index
     end
 
+    get '/catches/:id' do |id|
+        @catches = db.execute('SELECT * FROM catch WHERE user_id = ?', id)
+        erb :catches
+    end
     
 end

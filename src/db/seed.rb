@@ -2,7 +2,7 @@ require 'sqlite3'
 
 def db
     if @db == nil
-        @db = SQLite3::Database.new('./db/db.sqlite')
+        @db = SQLite3::Database.new('./db/db.db')
         @db.results_as_hash = true
     end
     return @db
