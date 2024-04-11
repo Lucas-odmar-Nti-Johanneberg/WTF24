@@ -1,6 +1,17 @@
 <% @catches.each do |item| %>
     <h1>CATCH</h1>
+        <li><%=item["art"]%></li>
         <li><%=item["datum"]%></li>
         <li><%=item["plats"]%></li>
         <li><%=item["vikt"]%></li>
+
+        <form action="/catches/<%= @id %>/delete/<%= item['id'] %>" method="post">
+            <button type="submit">Delete</button>
+        </form>
+        
+        <a href="/catches/edit/<%= item['id'] %>">Edit</a>
 <%end%>
+
+
+
+<a href="/register/<%=@id%>">Registrera</a>

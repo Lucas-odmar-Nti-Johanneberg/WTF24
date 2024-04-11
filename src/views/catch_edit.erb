@@ -1,0 +1,20 @@
+
+<form action="/catches/<%= @id %>/edit/<%= @catch['id'] %>" method="post">
+    <label for="datum">Datum:</label>
+    <input type="text" name="datum" value="<%= @catch['datum'] %>"><br>
+    
+    <label for="plats">Plats:</label>
+    <input type="text" name="plats" value="<%= @catch['plats'] %>"><br>
+    
+    <label for="vikt">Vikt:</label>
+    <input type="text" name="vikt" value="<%= @catch['vikt'] %>"><br>
+    
+    <label for="art">Art:</label>
+    <select name="art">
+      <% @fishes.each do |fish| %>
+        <option value="<%= fish['id'] %>" <%= 'selected' if fish['id'] == @catch['fish_id'] %>><%= fish['name'] %></option>
+      <% end %>
+    </select><br>
+    
+    <button type="submit">Update</button>
+</form>

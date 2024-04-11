@@ -1,0 +1,12 @@
+<form action="/register" method="POST">
+<input type="text" name="datum" placeholder="Datum">
+<input type="text" name="plats" placeholder="Plats">
+<input type="text" name="vikt" placeholder="Vikt">
+<input type="hidden" name="id" value="<%=@id%>">
+<select id="art" name="art">
+    <%@fishes.each do |fish|%>
+        <option value=<%=fish["id"]%>><%=fish["art"]%></option>
+    <%end%>
+</select>
+<button type="submit">add</button>
+</form>
