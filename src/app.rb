@@ -59,22 +59,24 @@ class App < Sinatra::Base
     get '/catches/edit/:catch_id' do |catch_id|
         # Retrieve the catch details for editing
         @catch = db.execute("SELECT * FROM catch WHERE id = ?", catch_id).first
-        erb :edit_catch
+
+        @fishes = db.execute("SELECT * FROM fish")
+        
+        erb :catch_edit
     end
-      
+    
     post '/catches/:user_id/edit/:catch_id' do |user_id, catch_id|
         # Update the catch details based on the submitted form data
         datum = params['datum']
         plats = params['plats']
         vikt = params['vikt']
         fish_id = params['art'].to_i
-      
+    
         db.execute("UPDATE catch SET datum = ?, plats = ?, vikt = ?, fish_id = ? WHERE id = ?", datum, plats, vikt, fish_id, catch_id)
-      
+    
         redirect "/catches/#{user_id}"
     end
-      
-      
+    
       
 
     post '/login' do 
