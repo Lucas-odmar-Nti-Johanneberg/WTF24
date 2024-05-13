@@ -77,20 +77,31 @@ class App < Sinatra::Base
         redirect "/catches/#{user_id}"
     end
     
-      
-
-    post '/login' do 
-        username = params['username']
-        cleartext_password = params['password'] 
-
-        user = db.execute('SELECT * FROM user WHERE username = ?', username).first
-        password_from_db = BCrypt::Password.new(user['password'])
-
-        if password_from_db == cleartext_password 
-            session[:user_id] = user['id'] 
+    get "/logout" do
+        if(session[:username])
+            session.clear
+            redirect "/"
         end
+    end  
 
-    end
+
+    post '/login' do
+        username = params['username']
+        cleartext_password = params['password']
+      
+        user = db.execute('SELECT * FROM user WHERE username = ?', username).first
+      
+        if BCrypt::Password.new(user['password']) == cleartext_password
+          session[:user_id] = user['id']
+          session[:username] = user['username']
+          session[:role] = user['role']
+          redirect "/"
+        else
+          # Handle invalid username or password
+          redirect "/login"  # Redirect to login page or display an error message
+        end
+      end
+      
 
     get '/register_person' do 
         erb :register_person
@@ -98,10 +109,21 @@ class App < Sinatra::Base
 
     post '/register_person' do 
         username = params['username']
+        namn = params['namn']
+        efternamn = params['efternamn']
         cleartext_password = params['password'] 
+        role = params['role'] 
+
         hashed_password = BCrypt::Password.create(cleartext_password)
+
         query = 'INSERT INTO user (namn, efternamn, username, password, role) VALUES (?, ?, ?, ?, ?) RETURNING id'
-        result = db.execute(query, namn, efternamn, usernamne, password, role).first 
+        result = db.execute(query, namn, efternamn, username, hashed_password, role).first
+
+        session[:user_id] = result
+        session[:username] = username
+        session[:role] = role
+        
+        redirect "/"
     end
 
 end

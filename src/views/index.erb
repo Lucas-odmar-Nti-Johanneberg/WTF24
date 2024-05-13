@@ -6,5 +6,10 @@
 </ul>
 
 <a href="/login/user">login</a>
-
+<a href="/logout">logout</a>
 <a href="/register_person">registera person</a>
+
+
+<% if session[:user_id] %>
+  <p>Logged in as<%= session[:username] %></p>
+<% end %>
