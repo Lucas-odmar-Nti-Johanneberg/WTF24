@@ -13,5 +13,12 @@
 <%end%>
 
 
+<% if session[:user_id] == @id %> 
 
-<a href="/register/<%=@id%>">Registrera</a>
+    <a href="/register/<%=@id%>">Registrera</a>
+
+<% else %>
+
+<p> <%= session[:user_id]%> <%= @id %> Cant register a catch unless logged in.</p>
+
+<% end %>

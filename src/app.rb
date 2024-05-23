@@ -20,17 +20,19 @@ class App < Sinatra::Base
                 INNER JOIN fish
                 ON catch.fish_id = fish.id
                 WHERE user_id = ?"
-        @catches = db.execute(query, id)
-        @id = id
-        erb :catches
 
+        @catches = db.execute(query, id)
+        @id = id.to_i 
+        erb :catches
     end
 
 
     get '/register/:id' do |id|
-        @fishes = db.execute("SELECT * FROM fish")
-        @id = id
-        erb :register
+        if (session[:user_id] == id.to_i)
+            @fishes = db.execute("SELECT * FROM fish")
+            @id = id
+            erb :register
+        end
     end 
 
     post '/register' do 
@@ -53,15 +55,18 @@ class App < Sinatra::Base
         # Example:
         db.execute("DELETE FROM catch WHERE id = ? AND user_id = ?", catch_id, user_id)
         redirect "/catches/#{user_id}"
-        
     end
 
     get '/catches/edit/:catch_id' do |catch_id|
         # Retrieve the catch details for editing
         @catch = db.execute("SELECT * FROM catch WHERE id = ?", catch_id).first
-
-        @fishes = db.execute("SELECT * FROM fish")
         
+        # Retrieve the user ID associated with this catch
+        @id = @catch['user_id']
+      
+        # Retrieve all fishes for the dropdown
+        @fishes = db.execute("SELECT * FROM fish")
+      
         erb :catch_edit
     end
     
@@ -97,7 +102,6 @@ class App < Sinatra::Base
           session[:role] = user['role']
           redirect "/"
         else
-          # Handle invalid username or password
           redirect "/login"  # Redirect to login page or display an error message
         end
       end
